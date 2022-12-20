@@ -10,21 +10,35 @@ defmodule HdmiHapAccessory.TV do
 
   def start_link(initial_value), do: Agent.start_link(fn -> initial_value end, name: __MODULE__)
 
+  @spec on?() :: boolean()
+  def on?, do: status() == true
   def status, do: Agent.get(__MODULE__, & &1)
 
   def on do
-    @cec_on_command |> String.replace("__CEC_ADDRESS__", cec_address()) |> cmd_exec() |> log()
-    Agent.update(__MODULE__, fn _ -> {true} end)
+    Logger.info("Turning on the TV")
+    cmd = String.replace(@cec_on_command, "__CEC_ADDRESS__", cec_address())
+
+    Task.Supervisor.async(HdmiHapAccessory.TaskSupervisor, fn ->
+      cmd |> cmd_exec() |> log()
+    end)
+
+    Agent.update(__MODULE__, fn _ -> true end)
+    :ok
   end
 
   def off do
-    @cec_off_command |> String.replace("__CEC_ADDRESS__", cec_address()) |> cmd_exec() |> log()
-    Agent.update(__MODULE__, fn _ -> {false} end)
+    Logger.info("Turning off the TV")
+    cmd = String.replace(@cec_off_command, "__CEC_ADDRESS__", cec_address())
+
+    Task.Supervisor.async(HdmiHapAccessory.TaskSupervisor, fn ->
+      cmd |> cmd_exec() |> log()
+    end)
+
+    Agent.update(__MODULE__, fn _ -> false end)
+    :ok
   end
 
-  defp log(value) do
-    Logger.warn(inspect(value))
-  end
+  defp log(value), do: Logger.warn(inspect(value))
 
   if Mix.env() == :dev do
     def cmd_exec(cmd), do: Logger.debug("Executing #{inspect(cmd)}")

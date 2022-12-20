@@ -8,6 +8,7 @@ defmodule HdmiHapAccessory.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      {Task.Supervisor, name: HdmiHapAccessory.TaskSupervisor},
       # Start the Telemetry supervisor
       HdmiHapAccessoryWeb.Telemetry,
       # Start the PubSub system

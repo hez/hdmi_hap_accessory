@@ -13,45 +13,38 @@ defmodule HdmiHapAccessory.HAP.Outlet do
     do: GenServer.start_link(__MODULE__, config, name: __MODULE__)
 
   @impl HAP.ValueStore
-  def get_value(:on), do: if(HdmiHapAccessory.TV.status(), do: {:ok, 1}, else: {:ok, 0})
+  def get_value(:on), do: {:ok, HdmiHapAccessory.TV.on?()}
 
-  def get_value(:outlet_in_use),
-    do: if(HdmiHapAccessory.TV.status(), do: {:ok, true}, else: {:ok, false})
+  def get_value(:outlet_in_use), do: {:ok, true}
 
   def get_value(val), do: Logger.error("unknown get #{inspect(val)}")
 
   @impl HAP.ValueStore
-  def put_value(0, :on) do
-    HdmiHapAccessory.TV.off()
-    :ok
-  end
+  def put_value(0, :on), do: put_value(false, :on)
+  def put_value(1, :on), do: put_value(true, :on)
+  def put_value(false, :on), do: HdmiHapAccessory.TV.off()
+  def put_value(true, :on), do: HdmiHapAccessory.TV.on()
 
-  def put_value(1, :on) do
-    HdmiHapAccessory.TV.on()
-    :ok
-  end
-
-  def put_value(value, opts), do: GenServer.call(__MODULE__, {:put, value, opts})
+  def put_value(value, opts),
+    do: Logger.error("unknown put #{inspect(value)} and #{inspect(opts)}")
 
   @impl HAP.ValueStore
-  def set_change_token(change_token, opts),
-    do: GenServer.call(__MODULE__, {:set_change_token, change_token, opts})
-
-  def toggle(name), do: GenServer.call(name, {:toggle, name})
+  def set_change_token(change_token, name),
+    do: GenServer.call(__MODULE__, {:set_change_token, change_token, name})
 
   @impl GenServer
-  def init(_), do: {:ok, %{change_token: nil}}
+  def init(_), do: {:ok, %{change_tokens: %{on: nil, outlet_in_use: nil}}}
 
   @impl GenServer
-  def handle_call({:set_change_token, change_token, opts}, _from, state) do
-    Logger.debug("new change token for #{inspect(opts)} #{inspect(change_token)}")
-    {:reply, :ok, %{state | change_token: change_token}}
+  def handle_call({:put, :on, _value} = params, _from, state) do
+    Logger.info("HAP.value_changed/1 called because #{inspect(params)}")
+    HAP.value_changed(state.change_tokens.on)
+    {:reply, :ok, state}
   end
 
-  def handle_call({:toggle, name}, _from, state) do
-    Logger.debug("toggling #{name}")
-    new_on_state = if state.on == 1, do: 0, else: 1
-    HAP.value_changed(state.change_token)
-    {:reply, :ok, %{state | on: new_on_state}}
+  @impl GenServer
+  def handle_call({:set_change_token, change_token, name}, _from, state) do
+    Logger.info("new change token for #{inspect(name)} #{inspect(change_token)}")
+    {:reply, :ok, %{state | change_tokens: Map.put(state.change_tokens, name, change_token)}}
   end
 end
