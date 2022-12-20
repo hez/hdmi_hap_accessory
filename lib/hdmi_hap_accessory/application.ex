@@ -23,16 +23,16 @@ defmodule HdmiHapAccessory.Application do
       HdmiHapAccessory.HAP.Outlet,
       {HAP,
        %HAP.AccessoryServer{
-         name: "HDMI Outlet",
-         model: "HDMIOutlet",
-         identifier: "11:22:33:44:12:66",
+         name: "HDMI Outlet-2",
+         model: "HDMIOutlet-2",
+         identifier: "11:22:33:44:12:69",
          accessory_type: 7,
          accessories: [
            %HAP.Accessory{
-             name: "HDMI TV",
+             name: "HDMI TV-2",
              services: [
                %HAP.Services.Outlet{
-                 name: "HDMI TV",
+                 name: "HDMI TV-2",
                  on: {HdmiHapAccessory.HAP.Outlet, :on},
                  outlet_in_use: {HdmiHapAccessory.HAP.Outlet, :outlet_in_use}
                }

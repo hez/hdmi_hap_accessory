@@ -20,10 +20,22 @@ defmodule HdmiHapAccessory.HAP.Outlet do
   def get_value(val), do: Logger.error("unknown get #{inspect(val)}")
 
   @impl HAP.ValueStore
-  def put_value(0, :on), do: put_value(false, :on)
-  def put_value(1, :on), do: put_value(true, :on)
-  def put_value(false, :on), do: HdmiHapAccessory.TV.off()
-  def put_value(true, :on), do: HdmiHapAccessory.TV.on()
+  def put_value(0, :on) do
+    Logger.info("Got put_value 0, :on")
+    HdmiHapAccessory.TV.off()
+  end
+  def put_value(1, :on) do
+    Logger.info("Got put_value 1, :on")
+    HdmiHapAccessory.TV.on()
+  end
+  def put_value(false, :on) do
+    Logger.info("Got put_value false, :on")
+    HdmiHapAccessory.TV.off()
+  end
+  def put_value(true, :on) do
+    Logger.info("Got put_value true, :on")
+    HdmiHapAccessory.TV.on()
+  end
 
   def put_value(value, opts),
     do: Logger.error("unknown put #{inspect(value)} and #{inspect(opts)}")
