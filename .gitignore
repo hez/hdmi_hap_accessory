@@ -22,5 +22,11 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 hdmi_hap_accessory-*.tar
 
+# plts
+priv/plts/*.plt*
+
+bin/config.sh
+logs/stdout.log
+
 # HAP
 hap_data/
