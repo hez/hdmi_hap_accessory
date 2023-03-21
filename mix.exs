@@ -37,7 +37,7 @@ defmodule HdmiHapAccessory.MixProject do
   defp deps do
     [
       # dev only
-      {:credo, "~> 1.6.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev, :test], runtime: false},
       # everything else
       {:finch, "~> 0.13"},
