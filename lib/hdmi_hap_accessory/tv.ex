@@ -38,7 +38,7 @@ defmodule HdmiHapAccessory.TV do
     :ok
   end
 
-  defp log(value), do: Logger.warn(inspect(value))
+  defp log(value), do: Logger.warning(inspect(value))
 
   if Mix.env() == :dev do
     def cmd_exec(cmd), do: Logger.debug("Executing #{inspect(cmd)}")
