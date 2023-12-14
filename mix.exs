@@ -1,14 +1,13 @@
-defmodule HdmiHapAccessory.MixProject do
+defmodule HDMIHAPAccessory.MixProject do
   use Mix.Project
 
   def project do
     [
       app: :hdmi_hap_accessory,
       version: "0.1.0",
-      elixir: "~> 1.14",
-      elixirc_paths: elixirc_paths(Mix.env()),
-      start_permanent: Mix.env() == :prod,
+      elixir: "~> 1.15",
       aliases: aliases(),
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: [
         plt_add_apps: [:mix, :ex_unit],
@@ -17,38 +16,22 @@ defmodule HdmiHapAccessory.MixProject do
     ]
   end
 
-  # Configuration for the OTP application.
-  #
-  # Type `mix help compile.app` for more information.
+  # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {HdmiHapAccessory.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      mod: {HDMIHAPAccessory.Application, []},
+      extra_applications: [:logger]
     ]
   end
 
-  # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
-
-  # Specifies your project dependencies.
-  #
-  # Type `mix help deps` for examples and options.
+  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       # dev only
       {:credo, "~> 1.7.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev, :test], runtime: false},
       # everything else
-      {:finch, "~> 0.13"},
-      {:gettext, "~> 0.20"},
-      {:hap, "~> 0.4"},
-      {:jason, "~> 1.2"},
-      {:phoenix, "~> 1.7.0-rc.0", override: true},
-      {:plug_cowboy, "~> 2.5"},
-      {:swoosh, "~> 1.3"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"}
+      {:hap, "~> 0.4"}
     ]
   end
 
@@ -60,7 +43,8 @@ defmodule HdmiHapAccessory.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get"]
+      setup: ["deps.get"],
+      build: ["deps.get", "compile", "release --overwrite"]
     ]
   end
 end
