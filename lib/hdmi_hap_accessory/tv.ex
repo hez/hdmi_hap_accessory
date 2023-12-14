@@ -1,4 +1,4 @@
-defmodule HdmiHapAccessory.TV do
+defmodule HDMIHAPAccessory.TV do
   @moduledoc """
   Holds the state of the TV and issues CEC commands
   """
@@ -15,10 +15,10 @@ defmodule HdmiHapAccessory.TV do
   def status, do: Agent.get(__MODULE__, & &1)
 
   def on do
-    Logger.info("Turning on the TV")
+    Logger.info("Turning on the TV @ #{cec_address()}")
     cmd = String.replace(@cec_on_command, "__CEC_ADDRESS__", cec_address())
 
-    Task.Supervisor.async(HdmiHapAccessory.TaskSupervisor, fn ->
+    Task.Supervisor.async(HDMIHAPAccessory.TaskSupervisor, fn ->
       cmd |> cmd_exec() |> log()
     end)
 
@@ -27,10 +27,10 @@ defmodule HdmiHapAccessory.TV do
   end
 
   def off do
-    Logger.info("Turning off the TV")
+    Logger.info("Turning off the TV @ #{cec_address()}")
     cmd = String.replace(@cec_off_command, "__CEC_ADDRESS__", cec_address())
 
-    Task.Supervisor.async(HdmiHapAccessory.TaskSupervisor, fn ->
+    Task.Supervisor.async(HDMIHAPAccessory.TaskSupervisor, fn ->
       cmd |> cmd_exec() |> log()
     end)
 

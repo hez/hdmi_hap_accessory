@@ -1,4 +1,4 @@
-defmodule HdmiHapAccessory.HAP.Outlet do
+defmodule HDMIHAPAccessory.HAP.Outlet do
   @moduledoc """
   Responsible for representing a HAP Outlet
   """
@@ -13,7 +13,7 @@ defmodule HdmiHapAccessory.HAP.Outlet do
     do: GenServer.start_link(__MODULE__, config, name: __MODULE__)
 
   @impl HAP.ValueStore
-  def get_value(:on), do: {:ok, HdmiHapAccessory.TV.on?()}
+  def get_value(:on), do: {:ok, HDMIHAPAccessory.TV.on?()}
 
   def get_value(:outlet_in_use), do: {:ok, true}
 
@@ -22,8 +22,8 @@ defmodule HdmiHapAccessory.HAP.Outlet do
   @impl HAP.ValueStore
   def put_value(0, :on), do: put_value(false, :on)
   def put_value(1, :on), do: put_value(true, :on)
-  def put_value(false, :on), do: HdmiHapAccessory.TV.off()
-  def put_value(true, :on), do: HdmiHapAccessory.TV.on()
+  def put_value(false, :on), do: HDMIHAPAccessory.TV.off()
+  def put_value(true, :on), do: HDMIHAPAccessory.TV.on()
 
   def put_value(value, opts),
     do: Logger.error("unknown put #{inspect(value)} and #{inspect(opts)}")
