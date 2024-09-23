@@ -30,6 +30,7 @@ priv/plts/*.plt*
 
 bin/config.sh
 logs/stdout.log
+logs/hdmi_hap_accessory.log
 
 # HAP
 hap_data/
