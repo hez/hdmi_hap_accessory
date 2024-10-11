@@ -28,3 +28,9 @@ export CEC_ADDRESS=xxx
 - Restart systemd `sudo systemctl daemon-reload`
 - Enable service `sudo systemctl enable hdmi_hap_accessory.service`
 - And reboot
+
+### Getting the HAP pairing code again
+
+```elixir
+HAP.Display.update_pairing_info_display()
+```
