@@ -1,5 +1,7 @@
 # HDMIHAPAccessory
 
+*This project has been rolled in to https://github.com/hez/homebridge-extra-devices *
+
 A simple HAP (Homekit) service to turn on and off a TV via HDMI CEC.
 
 ## Building
